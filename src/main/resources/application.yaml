@@ -1,0 +1,4 @@
+spring:
+  application.name: Sports Repository
+logging.level:
+  ROOT: INFO
