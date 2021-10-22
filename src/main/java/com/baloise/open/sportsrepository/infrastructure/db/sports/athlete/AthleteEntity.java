@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ATHLETE")
+@Table(name = "SPORTS.ATHLETE")
 public class AthleteEntity {
 
     @Id
