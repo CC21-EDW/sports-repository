@@ -16,7 +16,9 @@
         etc.).
     </description>
     <properties>
-        <java.version>11</java.version>
+      <java.version>11</java.version>
+      <sonar.organization>cc21-edw</sonar.organization>
+      <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
     <dependencies>
         <dependency>
