@@ -1,6 +1,5 @@
 package com.baloise.open.sportsrepository.infrastructure.kafka;
 
-import com.baloise.open.edw.infrastructure.kafka.Config;
 import com.baloise.open.edw.infrastructure.kafka.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -16,21 +15,21 @@ import java.util.Properties;
 @Slf4j
 public class ActivityConsumer {
 
-  private final KafkaConfiguration configuration;
+  private final Config config;
 
   private Consumer activityConsumer;
 
-  public ActivityConsumer(@Autowired KafkaConfiguration configuration) {
-    this.configuration = configuration;
+  public ActivityConsumer(@Autowired Config config) {
+    this.config = config;
   }
 
   @PostConstruct
   public void initActivityProducer() {
     Properties specificProperties = new Properties();
-    specificProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, configuration.getActivityValueSerializer());
-    specificProperties.put(Config.SCHEMA_SERVER_CONFIG_KEY, configuration.getSchemaRegistryUrl());
-    activityConsumer = Consumer.create(specificProperties, configuration.getActivityTopicName(), configuration.getSystemId(), getActivityHandler());
-    log.info("Start ActivityConsumer on topic " + configuration.getActivityTopicName());
+    specificProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, config.getActivityValueSerializer());
+    specificProperties.put(com.baloise.open.edw.infrastructure.kafka.Config.SCHEMA_SERVER_CONFIG_KEY, config.getSchemaRegistryUrl());
+    activityConsumer = Consumer.create(specificProperties, config.getActivityTopicName(), config.getSystemId(), getActivityHandler());
+    log.info("Start ActivityConsumer on topic " + config.getActivityTopicName());
     activityConsumer.run();
   }
 

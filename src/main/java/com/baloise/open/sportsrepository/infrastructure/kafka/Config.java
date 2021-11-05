@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Getter
-public class KafkaConfiguration {
+public class Config {
   @Value("${edw.kafka.system-id}")
   private String systemId;
 
