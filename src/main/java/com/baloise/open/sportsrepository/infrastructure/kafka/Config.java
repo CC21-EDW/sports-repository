@@ -16,6 +16,13 @@ public class Config {
   @Value("${edw.kafka.activity.value-serializer}")
   private String activityValueSerializer;
 
+  @Value("${edw.kafka.activity.value-deserializer}")
+  private String activityValueDeserializer;
+
   @Value("${edw.kafka.schema-registry-url}")
   private String schemaRegistryUrl;
+
+  @Value("${edw.kafka.activity.specific-avro-reader}")
+  private Boolean specificAvroReader;
+
 }

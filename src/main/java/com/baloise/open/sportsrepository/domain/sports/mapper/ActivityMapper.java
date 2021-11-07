@@ -10,5 +10,7 @@ public interface ActivityMapper {
 
   ActivityMapper INSTANCE = Mappers.getMapper(ActivityMapper.class);
 
-  Activity map(ActivityDto activityDto);
+  Activity of(ActivityDto activityDto);
+
+  ActivityDto to(Activity activity);
 }

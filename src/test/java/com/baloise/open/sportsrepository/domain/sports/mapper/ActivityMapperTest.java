@@ -22,7 +22,7 @@ class ActivityMapperTest {
   @Test
   void name() {
     final ActivityDto origin = createActivityDto();
-    final Activity result = ActivityMapper.INSTANCE.map(origin);
+    final Activity result = ActivityMapper.INSTANCE.of(origin);
     assertEquals(origin.getName(), result.getName());
     assertEquals(origin.getType(), result.getType());
     assertEquals(origin.getTimezone(), result.getTimezone());

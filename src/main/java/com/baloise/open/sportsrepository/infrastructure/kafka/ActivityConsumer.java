@@ -1,7 +1,16 @@
 package com.baloise.open.sportsrepository.infrastructure.kafka;
 
 import com.baloise.open.edw.infrastructure.kafka.Consumer;
+import com.baloise.open.edw.infrastructure.kafka.model.ActivityDto;
+import com.baloise.open.sportsrepository.domain.sports.Activity;
+import com.baloise.open.sportsrepository.domain.sports.mapper.ActivityMapper;
+import com.baloise.open.sportsrepository.infrastructure.db.sports.activity.ActivityEntity;
+import com.baloise.open.sportsrepository.infrastructure.db.sports.activity.ActivityEntityMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +36,36 @@ public class ActivityConsumer {
   public void initActivityProducer() {
     Properties specificProperties = new Properties();
     specificProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, config.getActivityValueSerializer());
+    specificProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, config.getActivityValueDeserializer());
     specificProperties.put(com.baloise.open.edw.infrastructure.kafka.Config.SCHEMA_SERVER_CONFIG_KEY, config.getSchemaRegistryUrl());
-    activityConsumer = Consumer.create(specificProperties, config.getActivityTopicName(), config.getSystemId(), getActivityHandler());
-    log.info("Start ActivityConsumer on topic " + config.getActivityTopicName());
+    specificProperties.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, config.getSpecificAvroReader());
+
+    activityConsumer = Consumer.create(specificProperties, config.getActivityTopicName(), config.getSystemId(), getActivityObjectHandler());
     activityConsumer.run();
+
+    log.info("Start ActivityConsumer on topic " + config.getActivityTopicName());
+
   }
 
-  private java.util.function.Consumer<? super ConsumerRecord<String, String>> getActivityHandler() {
+  private java.util.function.Consumer<? super ConsumerRecord<String, Object>> getActivityObjectHandler() {
     return (record) -> {
-      //TODO: TBI
-      log.info("TBI: handler for" + record);
+      try {
+        log.info("process " + record);
+        final String json = record.value().toString();
+        final ActivityDto activityDto = new ObjectMapper().readValue(json, ActivityDto.class);
+
+        // convert to Domain Object
+        final Activity activity = ActivityMapper.INSTANCE.of(activityDto);
+        activity.setId(record.key());
+        log.info("Domain object: " + activity);
+
+        // TODO: invoke Repo resp. save in DB
+        final ActivityEntity entity = ActivityEntityMapper.INSTANCE.of(activity);
+        log.info("DB entity: " + entity);
+      } catch (JsonProcessingException e) {
+        log.error(e.getMessage(), e);
+        //TODO: Add event containing failure
+      }
     };
   }
 

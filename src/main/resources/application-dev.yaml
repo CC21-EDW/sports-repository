@@ -27,5 +27,7 @@ edw:
     schema-registry-url: "http://localhost:9012"
     activity:
       topic-name: "lz.edw.strava-connect.activity"
-      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      value-serializer: "io.confluent.kafka.serializers.KafkaAvroSerializer"
+      value-deserializer: "io.confluent.kafka.serializers.KafkaAvroDeserializer"
+      specific-avro-reader: true
 
