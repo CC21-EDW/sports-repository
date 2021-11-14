@@ -6,6 +6,7 @@ import com.baloise.open.sportsrepository.domain.sports.Activity;
 import com.baloise.open.sportsrepository.domain.sports.mapper.ActivityMapper;
 import com.baloise.open.sportsrepository.infrastructure.db.sports.activity.ActivityEntity;
 import com.baloise.open.sportsrepository.infrastructure.db.sports.activity.ActivityEntityMapper;
+import com.baloise.open.sportsrepository.infrastructure.db.sports.activity.ActivityRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
@@ -25,11 +26,13 @@ import java.util.Properties;
 public class ActivityConsumer {
 
   private final Config config;
+  private final ActivityRepository activityRepository;
 
   private Consumer activityConsumer;
 
-  public ActivityConsumer(@Autowired Config config) {
+  public ActivityConsumer(@Autowired Config config, @Autowired ActivityRepository activityRepository) {
     this.config = config;
+    this.activityRepository = activityRepository;
   }
 
   @PostConstruct
@@ -50,18 +53,17 @@ public class ActivityConsumer {
   private java.util.function.Consumer<? super ConsumerRecord<String, Object>> getActivityObjectHandler() {
     return (record) -> {
       try {
-        log.info("process " + record);
-        final String json = record.value().toString();
-        final ActivityDto activityDto = new ObjectMapper().readValue(json, ActivityDto.class);
+        final ActivityDto activityDto = new ObjectMapper().readValue(record.value().toString(), ActivityDto.class);
 
-        // convert to Domain Object
+        // convert to Domain Object //TODO: may be done by stream inside kafka an not necessary here any longer
         final Activity activity = ActivityMapper.INSTANCE.of(activityDto);
         activity.setId(record.key());
         log.info("Domain object: " + activity);
 
-        // TODO: invoke Repo resp. save in DB
         final ActivityEntity entity = ActivityEntityMapper.INSTANCE.of(activity);
         log.info("DB entity: " + entity);
+        this.activityRepository.save(entity);
+
       } catch (JsonProcessingException e) {
         log.error(e.getMessage(), e);
         //TODO: Add event containing failure
