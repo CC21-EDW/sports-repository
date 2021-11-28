@@ -73,6 +73,6 @@ public class ActivityConsumer {
 
   @PreDestroy
   public void disconnectFromWorkflow() {
-    activityConsumer.pushStatusProducerShutdown();
+    activityConsumer.pushStatusShutdown();
   }
 }

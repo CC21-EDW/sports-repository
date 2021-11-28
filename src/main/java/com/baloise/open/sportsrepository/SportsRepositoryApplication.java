@@ -17,13 +17,9 @@ import java.util.UUID;
 @SpringBootApplication
 public class SportsRepositoryApplication {
 
-  @Autowired
-  private ActivityConsumer activityConsumer;
-
   public static void main(String[] args) {
     SpringApplication.run(SportsRepositoryApplication.class, args);
   }
-
 
   @Bean
   ApplicationRunner initAthletes(AthleteRepository repository) {
