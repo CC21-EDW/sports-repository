@@ -1,0 +1,31 @@
+server:
+  port: 10090
+
+logging:
+  level:
+    root: INFO
+    org.apache.http: WARN
+    com.github.dockerjava: WARN
+    corg.zeroturnaround.exec: WARN
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate.ddl-auto: none
+    hibernate.naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  flyway:
+    schemas: sports
+
+edw:
+  kafka:
+    bootstrap-servers: "localhost:4711"
+    system-id: strava-connect
+    schema-registry-url: "mock://localhost"
+    activity:
+      topic-name: "lz.edw.strava-connect.activity"
+      value-serializer: "io.confluent.kafka.serializers.KafkaAvroSerializer"
+      value-deserializer: "io.confluent.kafka.serializers.KafkaAvroDeserializer"
+      specific-avro-reader: true
+

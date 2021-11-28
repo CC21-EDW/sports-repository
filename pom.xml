@@ -30,7 +30,7 @@
     <avro.version>1.11.0</avro.version>
     <kafka-schema-registry-maven-plugin.version>7.0.0</kafka-schema-registry-maven-plugin.version>
     <strava-java-client.version>1.0.0-SNAPSHOT</strava-java-client.version>
-    <edw-component.version>0.1.0</edw-component.version>
+    <edw-component.version>0.1.1</edw-component.version>
     <mapstruct.version>1.4.2.Final</mapstruct.version>
   </properties>
 

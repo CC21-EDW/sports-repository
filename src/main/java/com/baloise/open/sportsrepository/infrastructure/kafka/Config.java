@@ -22,6 +22,9 @@ public class Config {
   @Value("${edw.kafka.schema-registry-url}")
   private String schemaRegistryUrl;
 
+  @Value("${edw.kafka.bootstrap-servers}")
+  private String bootstrapServers;
+
   @Value("${edw.kafka.activity.specific-avro-reader}")
   private Boolean specificAvroReader;
 
