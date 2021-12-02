@@ -4,15 +4,12 @@ server:
 logging:
   level:
     root: INFO
-    com.baloise.open: DEBUG
-    org.apache.kafka.clients: WARN
-    io.confluent.kafka.serializers: WARN
+    org.apache.http: WARN
+    com.github.dockerjava: WARN
+    corg.zeroturnaround.exec: WARN
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/testdb
-    username: postgres
-    password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -23,8 +20,9 @@ spring:
 
 edw:
   kafka:
+    bootstrap-servers: "localhost:4711"
     system-id: strava-connect
-    schema-registry-url: "http://localhost:9012"
+    schema-registry-url: "mock://localhost"
     activity:
       topic-name: "lz.edw.strava-connect.activity"
       value-serializer: "io.confluent.kafka.serializers.KafkaAvroSerializer"

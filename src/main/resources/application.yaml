@@ -2,3 +2,11 @@ spring:
   application.name: Sports Repository
 logging.level:
   ROOT: INFO
+
+edw:
+  kafka:
+    system-id: strava-connect
+    schema-registry-url: "http://localhost:9012"
+    activity:
+      topic-name: "lz.edw.strava-connect.activity"
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
