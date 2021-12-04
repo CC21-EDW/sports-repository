@@ -1,5 +1,6 @@
+[![CI](https://github.com/CC21-EDW/sports-repository/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/CC21-EDW/sports-repository/actions/workflows/ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CC21-EDW_sports-repository&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CC21-EDW_sports-repository)
-
+[![DepShield Badge](https://depshield.sonatype.org/badges/CC21-EDW/sports-repository/depshield.svg)](https://depshield.github.io)
 # sports-repository
 Provides a repository to handle persistence for all kinds of sports information (events, athlete, etc.)
 
