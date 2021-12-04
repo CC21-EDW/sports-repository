@@ -8,6 +8,7 @@ Provides a repository to handle persistence for all kinds of sports information 
   `mvn test -Dspring.profiles.active=ci`
 - Avro schema download not possible during CI and can be disabled by maven profile `github-ci` 
   `mvn verify -P github-ci`
+- Release `mvn release:prepare`
 
 # References
 * [Build a Basic App with Spring Boot and JPA using PostgreSQL](https://developer.okta.com/blog/2018/12/13/build-basic-app-spring-boot-jpa)
