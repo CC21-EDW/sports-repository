@@ -9,14 +9,21 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
+
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '17'
+
       - name: Build with Maven and anaylze with Sonarcloud
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify sonar:sonar --file pom.xml --settings .github/maven-settings.xml -P github-ci -Dspring.profiles.active=ci
 
+      - name: Run codacy-coverage-reporter     
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ${project.build.directory}/jacoco/jacoco.xml
