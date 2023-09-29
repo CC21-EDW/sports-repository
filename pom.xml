@@ -45,7 +45,7 @@
 
     <slf4j.version>1.7.32</slf4j.version>
     <confluent.version>5.3.6</confluent.version>
-    <avro.version>1.11.0</avro.version>
+    <avro.version>1.11.3</avro.version>
     <kafka-schema-registry-maven-plugin.version>7.0.0</kafka-schema-registry-maven-plugin.version>
     <strava-java-client.version>1.0.5</strava-java-client.version>
     <edw-component.version>0.1.1</edw-component.version>
